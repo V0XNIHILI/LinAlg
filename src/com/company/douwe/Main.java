@@ -19,9 +19,12 @@ public class Main {
         });
 
         // Show functionality of converting 1D double[] to matrix with given dimensions
-        Matrix h = new Matrix(new double[]{1, 2, 3, 4}, 2, 2);
+        Matrix h = new Matrix(new double[]{1, -2, 3, 4}, 2, 2);
+
+        Matrix g = new Matrix(5, 5, -2, 1);
 
         System.out.println(h);
+        System.out.println(g);
 
         int size = 1;
 

@@ -1,6 +1,7 @@
 package com.company.douwe;
 
-import java.util.Arrays;
+import java.lang.StringBuilder;
+import java.text.DecimalFormat;
 import java.util.Random;
 import java.lang.Math;
 
@@ -8,7 +9,7 @@ public class Matrix {
     public final int width;
     public final int height;
 
-    protected final double[][] values;
+    private final double[][] values;
 
     /**
      * Create a new Matrix instance
@@ -42,9 +43,7 @@ public class Matrix {
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
                     this.values[j][i] = 1;
-
                 }
-
             }
         }
     }
@@ -225,6 +224,19 @@ public class Matrix {
         }
 
         return result;
+    }
+
+    public static Matrix flipOverDiagonal(Matrix a) {
+        double[][] result = new double[a.width][a.height];
+        double[][] inputValues = a.getValues();
+
+        for (int i = 0; i < a.width; i++) {
+            for (int j = 0; j < a.height; j++) {
+                result[i][j] = inputValues[j][i];
+            }
+        }
+
+        return new Matrix(result);
     }
 
     /**
@@ -420,8 +432,48 @@ public class Matrix {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    /**
+     * Converts matrix to a String. See example below:
+     * <pre>{@code
+     * ┌                                ┐
+     * │ -1,00 -1,92 -1,80 -0,92  0,25  │
+     * │  0,05  0,99  0,25 -0,50 -0,19  │
+     * │  0,98 -1,94 -1,35  0,22 -0,88  │
+     * │ -0,85 -1,63  0,07 -0,39 -0,24  │
+     * │  0,45 -0,33 -1,14  0,07 -0,61  │
+     * └                                ┘
+     * }</pre>
+     * @return
+     */
     @Override
     public String toString() {
-        return Arrays.deepToString(this.values);
+        StringBuilder builder = new StringBuilder();
+        DecimalFormat dfm = new DecimalFormat("0.00");
+
+        for (int j = 0; j < this.height; j++) {
+            builder.append("│ ");
+
+
+            for (int i = 0; i < this.width; i++) {
+                if (i != 0)
+                    builder.append(" ");
+
+                if (this.values[j][i] > 0)
+                    builder.append(" ");
+
+                builder.append(dfm.format(this.values[j][i]));
+            }
+
+            builder.append("  │");
+
+            builder.append("\n");
+        }
+
+        final int lineLength = this.width * 6 + 4;
+
+        final String prepend = "┌" + " ".repeat(lineLength - 2) + "┐\n";
+        final String append = "└" + " ".repeat(lineLength - 2) + "┘\n";
+
+        return prepend + builder.toString() + append;
     }
 }
