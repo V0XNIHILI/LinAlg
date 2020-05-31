@@ -1,7 +1,5 @@
 package com.company.douwe;
 
-import com.company.douwe.Matrix;
-
 public class Main {
     public static void main(String[] args) {
         Matrix a = new Matrix(2, 2);
@@ -34,7 +32,7 @@ public class Main {
 
             long startTime = System.currentTimeMillis();
 
-            Matrix l = Matrix.pow(k, 2);
+            Matrix l = LinAlg.pow(k, 2);
 
             long endTime = System.currentTimeMillis();
 
