@@ -8,7 +8,7 @@ public class Main {
         // Write Matrix constructors like this so they are easy to read
         Matrix c = new Matrix(new double[][]{
                 {1, 2},
-                {4, 5}
+                {3, 4}
         });
 
         Matrix d = new Matrix(new double[][]{
@@ -17,7 +17,7 @@ public class Main {
         });
 
         // Show functionality of converting 1D double[] to matrix with given dimensions
-        Matrix h = new Matrix(new double[]{1, -2, 3, 4}, 2, 2);
+        Matrix h = new Matrix(new double[]{1, -2, 3, 4, 5, 6}, 3, 2);
 
         Matrix g = new Matrix(5, 5, -2, 1);
 
@@ -26,23 +26,23 @@ public class Main {
 
         int size = 1;
 
-        // Run matrix multiplication operations for matrix with size 1, 2, 4, 8 ... 512, 1024 and time them
-        while (size < 2048) {
-            Matrix k = new Matrix(size, size, -1, 1);
-
-            long startTime = System.currentTimeMillis();
-
-            Matrix l = LinAlg.pow(k, 2);
-
-            long endTime = System.currentTimeMillis();
-
-            System.out.println((endTime - startTime));
-
-            size *= 2;
-        }
+//        // Run matrix multiplication operations for matrix with size 1, 2, 4, 8 ... 512, 1024 and time them
+//        while (size < 2048) {
+//            Matrix k = new Matrix(size, size, -1, 1);
+//
+//            long startTime = System.currentTimeMillis();
+//
+//            Matrix l = LinAlg.pow(k, 2);
+//
+//            long endTime = System.currentTimeMillis();
+//
+//            System.out.println((endTime - startTime));
+//
+//            size *= 2;
+//        }
 
         // Show replacement functionality
-        d.replaceWhereBigger(8, -100);
+//        d.replaceWhereBigger(8, -100);
 
         System.out.println(d);
     }

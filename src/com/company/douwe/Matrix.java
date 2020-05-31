@@ -3,13 +3,14 @@ package com.company.douwe;
 import java.lang.StringBuilder;
 import java.text.DecimalFormat;
 import java.util.Random;
+import java.util.Arrays;
 import java.lang.Math;
 
 public class Matrix {
     public final int width;
     public final int height;
 
-    private final double[][] values;
+    private final double[] values;
 
     /**
      * Create a new Matrix instance
@@ -37,13 +38,11 @@ public class Matrix {
         this.width = width;
         this.height = height;
 
-        this.values = new double[height][width];
+        this.values = new double[height * width];
 
         if (ones == true) {
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    this.values[j][i] = 1;
-                }
+            for (int i = 0; i < width * height; i++) {
+                this.values[i] = 1;
             }
         }
     }
@@ -62,13 +61,10 @@ public class Matrix {
             throw new IllegalArgumentException("The input data does not fit into a matrix specified by the width and height");
 
 
-        int inputIndexCounter = 0;
+        // @todo remove the loop?
+        for (int i = 0; i < width * height; i++) {
+            this.values[i] = input[i];
 
-        for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++) {
-                this.values[j][i] = input[inputIndexCounter];
-                inputIndexCounter++;
-            }
         }
     }
 
@@ -87,13 +83,10 @@ public class Matrix {
 
         double factor = (max - min);
 
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                this.values[j][i] = min + factor * random.nextDouble();
-            }
+        for (int i = 0; i < width * height; i++) {
+            this.values[i] = min + factor * random.nextDouble();
         }
     }
-
 
     /**
      * Internal constructor used to return the result of calculations
@@ -111,12 +104,19 @@ public class Matrix {
         this.width = input[0].length;
         this.height = input.length;
 
-        this.values = input;
+        this.values = new double[this.width * this.height];
+
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                this.values[this.width * j + i] = input[i][j];
+                System.out.println(input[i][j]);
+            }
+        }
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    public double[][] getValues() {
+    public double[] getValues() {
         return this.values;
     }
 
@@ -128,10 +128,8 @@ public class Matrix {
      * @param value The number to add to all the values
      */
     public void addValue(double value) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] += value;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] += value;
         }
     }
 
@@ -150,10 +148,8 @@ public class Matrix {
      * @param value The number to multiply all the values in the matrix width
      */
     public void multiplyWithValue(double value) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] *= value;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] *= value;
         }
     }
 
@@ -172,10 +168,8 @@ public class Matrix {
      * @param power
      */
     public void toThePower(double power) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = Math.pow(this.values[j][i], power);
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = Math.pow(this.values[i], power);
         }
     }
 
@@ -185,105 +179,81 @@ public class Matrix {
         if (x >= this.width || y >= this.height)
             throw new IllegalArgumentException("Provided value coordinates are larger than the dimesions of the matrix");
 
-        return this.values[y][x];
+        return this.values[this.width * y + x];
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     public void replaceWhereEquals(double comparisonValue, double valueIfTrue, double valueIfFalse) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] == comparisonValue ? valueIfTrue : valueIfFalse;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] == comparisonValue ? valueIfTrue : valueIfFalse;
         }
     }
 
     public void replaceWhereEquals(double comparisonValue, double valueIfTrue) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] == comparisonValue ? valueIfTrue : this.values[j][i];
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] == comparisonValue ? valueIfTrue : this.values[i];
         }
     }
 
     public void replaceWhereNotEquals(double comparisonValue, double valueIfTrue, double valueIfFalse) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] != comparisonValue ? valueIfTrue : valueIfFalse;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] != comparisonValue ? valueIfTrue : valueIfFalse;
         }
     }
 
     public void replaceWhereNotEquals(double comparisonValue, double valueIfTrue) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] != comparisonValue ? valueIfTrue : this.values[j][i];
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] != comparisonValue ? valueIfTrue : this.values[i];
         }
     }
 
 
     public void replaceWhereBigger(double comparisonValue, double valueIfTrue, double valueIfFalse) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] > comparisonValue ? valueIfTrue : valueIfFalse;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] > comparisonValue ? valueIfTrue : valueIfFalse;
         }
     }
 
     public void replaceWhereBigger(double comparisonValue, double valueIfTrue) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] > comparisonValue ? valueIfTrue : this.values[j][i];
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] > comparisonValue ? valueIfTrue : this.values[i];
         }
     }
 
     public void replaceWhereBiggerOrEquals(double comparisonValue, double valueIfTrue, double valueIfFalse) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] >= comparisonValue ? valueIfTrue : valueIfFalse;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] >= comparisonValue ? valueIfTrue : valueIfFalse;
         }
     }
 
     public void replaceWhereBiggerOrEquals(double comparisonValue, double valueIfTrue) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] >= comparisonValue ? valueIfTrue : this.values[j][i];
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] >= comparisonValue ? valueIfTrue : this.values[i];
         }
     }
 
     public void replaceWhereSmaller(double comparisonValue, double valueIfTrue, double valueIfFalse) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] < comparisonValue ? valueIfTrue : valueIfFalse;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] < comparisonValue ? valueIfTrue : valueIfFalse;
         }
     }
 
     public void replaceWhereSmaller(double comparisonValue, double valueIfTrue) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] < comparisonValue ? valueIfTrue : this.values[j][i];
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] < comparisonValue ? valueIfTrue : this.values[i];
         }
     }
 
     public void replaceWhereSmallerOrEquals(double comparisonValue, double valueIfTrue, double valueIfFalse) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] <= comparisonValue ? valueIfTrue : valueIfFalse;
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] <= comparisonValue ? valueIfTrue : valueIfFalse;
         }
     }
 
     public void replaceWhereSmallerOrEquals(double comparisonValue, double valueIfTrue) {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                this.values[j][i] = this.values[j][i] <= comparisonValue ? valueIfTrue : this.values[j][i];
-            }
+        for (int i = 0; i < this.width * this.height; i++) {
+            this.values[i] = this.values[i] <= comparisonValue ? valueIfTrue : this.values[i];
         }
     }
 
@@ -300,6 +270,7 @@ public class Matrix {
      * │  0,45 -0,33 -1,14  0,07 -0,61  │
      * └                                ┘
      * }</pre>
+     *
      * @return
      */
     @Override
@@ -307,23 +278,19 @@ public class Matrix {
         StringBuilder builder = new StringBuilder();
         DecimalFormat dfm = new DecimalFormat("0.00");
 
-        for (int j = 0; j < this.height; j++) {
-            builder.append("│ ");
+        for (int i = 0; i < this.width * this.height; i++) {
+            if (i % this.width == 0)
+                builder.append("│ ");
+            else
+                builder.append(" ");
 
+            if (this.values[i] > 0)
+                builder.append(" ");
 
-            for (int i = 0; i < this.width; i++) {
-                if (i != 0)
-                    builder.append(" ");
+            builder.append(dfm.format(this.values[i]));
 
-                if (this.values[j][i] > 0)
-                    builder.append(" ");
-
-                builder.append(dfm.format(this.values[j][i]));
-            }
-
-            builder.append("  │");
-
-            builder.append("\n");
+            if ((i + 1) % this.width == 0)
+                builder.append("  │\n");
         }
 
         final int lineLength = this.width * 6 + 4;
