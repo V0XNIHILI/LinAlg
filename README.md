@@ -6,6 +6,28 @@
 
 To write!
 
+## Example usage
+
+### Creating a new Matrix
+
+```java
+// Write Matrix constructors like this so they are easy to read
+Matrix a = new Matrix(new double[][]{
+        {1, 2},
+        {3, 4}
+});
+
+// You can also specify a 1D array with a certain width and height as constructor input
+Matrix b = new Matrix(new double[]{1, 2, 3, 4, 5, 6}, 3, 2);
+```
+
+### Performing linear algebra
+
+```java
+// Calculate the third power of a matrix
+Matrix c = LinAlg.pow(a, 3);
+```
+
 ## Performance
 
 | Matrix size (n * n) | Java (using double[][]) | Java (using double[]) | Python 3.7  | Numpy (uses compiled C) |
