@@ -30,6 +30,9 @@ Matrix c = LinAlg.pow(a, 3);
 
 ## Performance
 
+Tested on a 2014 MacBook Pro with 16 GB of RAM and a 2.5 GHz Quad-Core Intel Core i7. Data is in
+milliseconds and is averaged over 3 runs.
+
 | Matrix size (n * n) | Java (using double[][]) | Java (using double[]) | Python 3.7  | Numpy (uses compiled C) |
 |---------------------|-------------------------|-----------------------|-------------|-------------------------|
 | 1                   | 0                       | 0                     | 0           | 0                       |
