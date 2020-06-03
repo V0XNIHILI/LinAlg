@@ -3,7 +3,6 @@ package com.company.douwe;
 import java.lang.StringBuilder;
 import java.text.DecimalFormat;
 import java.util.Random;
-import java.util.Arrays;
 import java.lang.Math;
 
 public class Matrix {
