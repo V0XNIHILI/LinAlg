@@ -2,6 +2,8 @@ package com.company.douwe;
 
 import com.company.douwe.Matrix;
 
+import java.util.stream.IntStream;
+
 public class LinAlg {
     /**
      * Multiply two matrices
@@ -19,29 +21,20 @@ public class LinAlg {
         double[] inputValuesA = a.getValues();
         double[] inputValuesB = b.getValues();
 
-        for (int i = 0; i < b.width; i++) {
+        IntStream.range(0, b.width).parallel().forEach(i -> {
             for (int j = 0; j < a.height; j++) {
                 double total = 0;
 
+                int locationInA = j * a.width;
+
                 for (int k = 0; k < b.height; k++) {
-                    total += inputValuesA[j*a.width + k] * inputValuesB[k*b.width + i];
+                    total += inputValuesA[locationInA + k] * inputValuesB[k * b.width + i];
                 }
 
                 result[j * b.width + i] = total;
             }
-        }
+        });
 
-//        for (int i = 0; i < b.width; i++) {
-//            for (int j = 0; j < a.height; j++) {
-//                double total = 0;
-//
-//                for (int k = 0; k < b.height; k++) {
-//                    total += inputValuesA[j][k] * inputValuesB[k][i];
-//                }
-//
-//                result[j][i] = total;
-//            }
-//        }
 
         return new Matrix(result, b.width, a.height);
     }
